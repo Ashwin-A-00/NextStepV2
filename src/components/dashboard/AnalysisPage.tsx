@@ -59,12 +59,7 @@ export const AnalysisPage = ({ profile, selectedCareerId, aiData, onBack }: Anal
   if (error || !analysis) {
     return (
       <section className="relative min-h-screen bg-black text-white px-4 md:px-8 py-8">
-        <button
-          className="mb-6 inline-flex items-center px-3 py-1.5 text-xs text-white/60 border border-white/15 rounded-full bg-white/5 backdrop-blur-md hover:bg-accent hover:text-black hover:border-accent transition-colors"
-          onClick={onBack}
-        >
-          ← Back to dashboard
-        </button>
+
         <p className="text-red-400">{error || "Something went wrong."}</p>
       </section>
     );
@@ -73,12 +68,7 @@ export const AnalysisPage = ({ profile, selectedCareerId, aiData, onBack }: Anal
   return (
     <section className="relative min-h-screen bg-black text-white px-4 md:px-8 py-8">
       <div className="max-w-6xl mx-auto">
-        <button
-          className="mb-6 inline-flex items-center px-3 py-1.5 text-xs text-white/60 border border-white/15 rounded-full bg-white/5 backdrop-blur-md hover:bg-red-500 hover:text-white hover:border-red-400 transition-colors"
-          onClick={onBack}
-        >
-          ← Back to dashboard
-        </button>
+
 
         <div className="mb-8 bg-white/5 backdrop-blur-xl border border-white/15 px-6 py-6 md:px-8 md:py-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -153,7 +143,7 @@ export const AnalysisPage = ({ profile, selectedCareerId, aiData, onBack }: Anal
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" horizontal={false} />
                   <XAxis type="number" domain={[0, 100]} hide />
                   <YAxis type="category" dataKey="category" axisLine={false} tickLine={false} tick={{ fill: 'rgba(255,255,255,0.7)', fontSize: 12 }} width={80} />
-                  <Tooltip 
+                  <Tooltip
                     contentStyle={{ backgroundColor: 'rgba(0,0,0,0.8)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
                     itemStyle={{ color: 'rgba(255,255,255,0.8)' }}
                     cursor={{ fill: 'rgba(255,255,255,0.05)' }}
@@ -184,7 +174,7 @@ export const AnalysisPage = ({ profile, selectedCareerId, aiData, onBack }: Anal
                 The highest leverage skills you are currently missing, ranked by market demand.
               </p>
             </div>
-            
+
             {analysis.missingSkills.length === 0 ? (
               <p className="text-sm text-white/50 italic py-4">Awesome job! AI indicates you have all the necessary core skills sorted.</p>
             ) : (
@@ -231,7 +221,7 @@ export const AnalysisPage = ({ profile, selectedCareerId, aiData, onBack }: Anal
                   {addWeeks(0)}
                 </span>
               </div>
-              
+
               {/* Calculating weeks purely for cosmetic display of progression */}
               <div className="flex flex-col items-center gap-1">
                 <span className="px-2 py-0.5 border border-white/20 text-[10px] rounded-sm bg-black/40">
@@ -241,7 +231,7 @@ export const AnalysisPage = ({ profile, selectedCareerId, aiData, onBack }: Anal
                   {addWeeks(Math.floor(parseInt(analysis.estimatedWeeks.split("-")[0] || "12") / 2))}
                 </span>
               </div>
-              
+
               <div className="flex flex-col items-end gap-1">
                 <span className="px-2 py-0.5 border border-accent text-[10px] text-accent rounded-sm bg-accent/10">
                   Job Ready

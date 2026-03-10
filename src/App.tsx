@@ -20,6 +20,9 @@ import { ProfilePage } from "./components/dashboard/ProfilePage";
 import { CareersPage } from "./components/dashboard/CareersPage";
 import { RoadmapPage } from "./components/dashboard/RoadmapPage";
 import { AnalysisPage } from "./components/dashboard/AnalysisPage";
+import { MentorSupportPage } from "./components/dashboard/MentorSupportPage";
+import { ProjectChartPage } from "./components/dashboard/ProjectChartPage";
+import { DashboardLayout } from "./components/dashboard/DashboardLayout";
 
 export type ViewId =
   | "landing"
@@ -33,7 +36,9 @@ export type ViewId =
   | "profile"
   | "careers"
   | "roadmap"
-  | "analysis";
+  | "analysis"
+  | "project-chart"
+  | "mentor-support";
 
 export type UserProfile = {
   name: string;
@@ -166,51 +171,67 @@ export default function App() {
           />
         )}
 
-        {view === "dashboard" && (
-          <Dashboard
-            profile={profile}
-            selectedCareerId={selectedCareerId}
-            selectedCareerData={selectedCareerData}
-            onOpenProfile={() => navigate("profile")}
-            onOpenCareers={() => navigate("careers")}
-            onOpenRoadmap={() => navigate("roadmap")}
-            onOpenAnalysis={() => navigate("analysis")}
-          />
-        )}
+        {["dashboard", "profile", "careers", "roadmap", "analysis", "project-chart", "mentor-support"].includes(view) && (
+          <DashboardLayout currentView={view} onNavigate={navigate} profile={profile}>
+            {view === "dashboard" && (
+              <Dashboard
+                profile={profile}
+                selectedCareerId={selectedCareerId}
+                selectedCareerData={selectedCareerData}
+                onOpenProfile={() => navigate("profile")}
+                onOpenCareers={() => navigate("careers")}
+                onOpenRoadmap={() => navigate("roadmap")}
+                onOpenAnalysis={() => navigate("analysis")}
+                onOpenProjectChart={() => navigate("project-chart")}
+                onOpenMentorSupport={() => navigate("mentor-support")}
+              />
+            )}
 
-        {view === "profile" && (
-          <ProfilePage profile={profile} onBack={() => navigate("dashboard")} />
-        )}
+            {view === "profile" && (
+              <ProfilePage
+                profile={profile}
+                onUpdateProfile={setProfile}
+              />
+            )}
 
-        {view === "careers" && (
-          <CareersPage
-            profile={profile}
-            selectedCareerId={selectedCareerId}
-            aiData={aiData}
-            onAIGenerated={setAiData}
-            onSelectCareer={(id) => {
-              setSelectedCareerId(id);
-            }}
-            onBack={() => navigate("dashboard")}
-            onOpenRoadmap={() => navigate("roadmap")}
-          />
-        )}
+            {view === "careers" && (
+              <CareersPage
+                profile={profile}
+                selectedCareerId={selectedCareerId}
+                aiData={aiData}
+                onAIGenerated={setAiData}
+                onSelectCareer={(id) => {
+                  setSelectedCareerId(id);
+                }}
+                onOpenRoadmap={() => navigate("roadmap")}
+              />
+            )}
 
-        {view === "roadmap" && (
-          <RoadmapPage
-            profile={profile}
-            selectedCareerId={selectedCareerId}
-            aiData={aiData}
-            onBack={() => navigate("dashboard")}
-          />
-        )}
+            {view === "roadmap" && (
+              <RoadmapPage
+                profile={profile}
+                selectedCareerId={selectedCareerId}
+                aiData={aiData}
+                onBack={() => navigate("dashboard")}
+              />
+            )}
 
-        {view === "analysis" && (
-          <AnalysisPage
-            profile={profile}
-            selectedCareerId={selectedCareerId}
-            onBack={() => navigate("dashboard")}
-          />
+            {view === "analysis" && (
+              <AnalysisPage
+                profile={profile}
+                selectedCareerId={selectedCareerId}
+                onBack={() => navigate("dashboard")}
+              />
+            )}
+
+            {view === "project-chart" && (
+              <ProjectChartPage profile={profile} onBack={() => navigate("dashboard")} />
+            )}
+
+            {view === "mentor-support" && (
+              <MentorSupportPage onBack={() => navigate("dashboard")} />
+            )}
+          </DashboardLayout>
         )}
       </div>
     </main>

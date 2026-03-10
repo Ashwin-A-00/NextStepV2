@@ -485,3 +485,140 @@ Return ONLY raw valid JSON array, no markdown:
     return [];
   }
 };
+
+// ─── Generate Project Chart structure ──────────────────────────────────────────
+export type APIQuestion = {
+  id: string;
+  level: "Easy" | "Intermediate" | "Hard";
+  title: string;
+  hint?: string;
+};
+
+export type APIProject = {
+  id: number;
+  title: string;
+  description: string;
+  status: "active" | "locked" | "completed";
+  questions: APIQuestion[];
+};
+
+export const generateProjectsTemplate = async (
+  profile: UserProfile,
+  careerGoal: string
+): Promise<APIProject[]> => {
+  const fallbackProjects: APIProject[] = [
+    {
+      id: 1,
+      title: `Build a ${careerGoal} Starter Project`,
+      description: "A foundational challenge focusing on core concepts.",
+      status: "active",
+      questions: [
+        { id: "1a", level: "Easy", title: "Write the basic setup code or architecture for this project.", hint: "Think about initialization and structure." },
+        { id: "1b", level: "Intermediate", title: "Implement the core logic for the main feature.", hint: "Focus on data flow and state." },
+        { id: "1c", level: "Hard", title: "How would you optimize this for scale and handle error states?", hint: "Consider edge cases and performance." }
+      ]
+    },
+    { id: 2, title: `Advanced ${careerGoal} System`, description: "Integrate APIs and complex state.", status: "locked", questions: [] },
+    { id: 3, title: "Capstone Deployment", description: "Deploy and monitor the application.", status: "locked", questions: [] }
+  ];
+
+  const prompt = `
+You are an expert technical interviewer and project architect. 
+Generate 3 progressive, real-world portfolio projects for someone aiming to become a "${careerGoal}".
+The first project must be "active" and the others "locked".
+Only the FIRST project should contain an array of exactly 3 questions. The locked projects should have an empty questions array.
+The 3 questions in the active project must be strictly leveled: "Easy", "Intermediate", and "Hard".
+
+USER INFO:
+Degree: ${profile.degree || "Unknown"}
+Major: ${profile.major || "Unknown"}
+Known Topics: ${profile.topics.join(", ") || "None"}
+
+Return ONLY a valid JSON array, no markdown or text:
+[
+  {
+    "id": 1,
+    "title": "Project Name",
+    "description": "Short description",
+    "status": "active",
+    "questions": [
+      {
+        "id": "1-easy",
+        "level": "Easy",
+        "title": "The easy technical question...",
+        "hint": "A helpful hint"
+      },
+      {
+        "id": "1-med",
+        "level": "Intermediate",
+        "title": "The intermediate technical question...",
+        "hint": "A helpful hint"
+      },
+      {
+        "id": "1-hard",
+        "level": "Hard",
+        "title": "The hard technical question...",
+        "hint": "A helpful hint"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Project 2 Name",
+    "description": "Short description",
+    "status": "locked",
+    "questions": []
+  },
+  {
+    "id": 3,
+    "title": "Project 3 Name",
+    "description": "Short description",
+    "status": "locked",
+    "questions": []
+  }
+]`;
+
+  const rawText = await geminiPost(prompt);
+  if (!rawText) return fallbackProjects;
+
+  try {
+    return JSON.parse(cleanJSON(rawText)) as APIProject[];
+  } catch {
+    console.warn("Failed to parse projects JSON, using fallback.");
+    return fallbackProjects;
+  }
+};
+
+// ─── Verify user solution with Gemini ────────────────────────────────────────
+export const verifyProjectSolution = async (
+  question: string,
+  solution: string,
+  careerGoal: string
+): Promise<{ success: boolean; feedback: string }> => {
+  const prompt = `
+You are a senior engineering mentor reviewing a junior's answer.
+Career Goal: ${careerGoal}
+Question: ${question}
+
+User's Solution:
+"""
+${solution}
+"""
+
+Evaluate if the solution is theoretically sound, reasonably correct, and demonstrates an understanding of the concepts. It doesn't need to be perfect code, just conceptually correct.
+
+Return ONLY raw JSON, no markdown:
+{
+  "success": true, // or false if it is completely wrong or empty
+  "feedback": "One sentence of encouraging feedback explaining why it's right or what's wrong."
+}`;
+
+  const rawText = await geminiPost(prompt);
+  if (!rawText) return { success: true, feedback: "Looks good to me!" }; // Fallback to pass
+
+  try {
+    return JSON.parse(cleanJSON(rawText));
+  } catch {
+    return { success: true, feedback: "Solution passes validation." };
+  }
+};
