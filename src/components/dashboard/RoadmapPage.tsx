@@ -353,7 +353,7 @@ export const RoadmapPage = ({ profile, selectedCareerId, aiData, onBack }: Roadm
       // Specific DAG Layout from user reference
       let x = 50;
       let y = 15;
-      
+
       if (index === 0) { x = 50; y = 10; } // Core / Programming Basics
       else if (index === 1) { x = 20; y = 35; } // Left wing (HTML/CSS)
       else if (index === 2) { x = 80; y = 35; } // Right wing (JS)
@@ -361,8 +361,8 @@ export const RoadmapPage = ({ profile, selectedCareerId, aiData, onBack }: Roadm
       else if (index === 4) { x = 10; y = 65; } // Far Left (Git)
       else if (index === 5) { x = 90; y = 65; } // Far Right (API)
       else if (index === 6) { x = 50; y = 85; } // Bottom Center (Full Stack)
-      else { 
-        x = index % 2 === 0 ? 30 : 70; 
+      else {
+        x = index % 2 === 0 ? 30 : 70;
         y = 20 + Math.min(index * 10, 70);
       }
 
@@ -395,12 +395,7 @@ export const RoadmapPage = ({ profile, selectedCareerId, aiData, onBack }: Roadm
   return (
     <section className="relative min-h-screen bg-black text-white px-4 md:px-8 py-8">
       <div className="max-w-5xl mx-auto">
-        <button
-          className="mb-6 inline-flex items-center px-3 py-1.5 text-xs text-white/60 border border-white/15 rounded-full bg-white/5 backdrop-blur-md hover:bg-red-500 hover:text-white hover:border-red-400 transition-colors"
-          onClick={onBack}
-        >
-          ← Back to dashboard
-        </button>
+
 
         <div className="mb-6 flex items-center justify-between gap-4">
           <div>
@@ -446,7 +441,7 @@ export const RoadmapPage = ({ profile, selectedCareerId, aiData, onBack }: Roadm
               const a = layout[from];
               const b = layout[to];
               if (!a || !b) return null;
-              
+
               const startX = a.x;
               const startY = a.y;
               const endX = b.x;
@@ -484,13 +479,12 @@ export const RoadmapPage = ({ profile, selectedCareerId, aiData, onBack }: Roadm
                   }
                 }}
                 disabled={state === "locked"}
-                className={`absolute flex flex-col items-start justify-center px-5 py-4 text-xs md:text-sm border rounded-2xl backdrop-blur-xl transition-all w-[160px] md:w-[200px] ${
-                  isCurrent
+                className={`absolute flex flex-col items-start justify-center px-5 py-4 text-xs md:text-sm border rounded-2xl backdrop-blur-xl transition-all w-[160px] md:w-[200px] ${isCurrent
                     ? "bg-white/10 border-white text-white shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:bg-white/20 hover:scale-105 cursor-pointer z-10"
                     : isCompleted
-                    ? "bg-emerald-500/10 border-emerald-500/50 text-emerald-50 hover:bg-emerald-500/20 hover:scale-105 cursor-pointer z-10"
-                    : "bg-black/60 border-white/5 text-white/30 cursor-not-allowed grayscale"
-                }`}
+                      ? "bg-emerald-500/10 border-emerald-500/50 text-emerald-50 hover:bg-emerald-500/20 hover:scale-105 cursor-pointer z-10"
+                      : "bg-black/60 border-white/5 text-white/30 cursor-not-allowed grayscale"
+                  }`}
                 style={{
                   left: `${pos.x}%`,
                   top: `${pos.y}%`,
@@ -549,16 +543,16 @@ export const RoadmapPage = ({ profile, selectedCareerId, aiData, onBack }: Roadm
                 ✕
               </button>
             </div>
-            
+
             <p className="text-sm text-white/60 mb-5 leading-relaxed">
               {activeNode.description || describeNode(activeNode, goal)}
             </p>
-            
+
             <div className="bg-white/5 border border-white/5 rounded-2xl p-4 mb-6">
               <p className="text-[10px] uppercase tracking-[0.2em] text-white/40 mb-3">
                 {loadingMaterials === activeNode.id ? "Synthesizing AI Study Material..." : "AI‑curated study material"}
               </p>
-              
+
               {loadingMaterials === activeNode.id ? (
                 <div className="flex items-center gap-3">
                   <div className="w-4 h-4 border-2 border-white/10 border-t-accent rounded-full animate-spin"></div>
@@ -566,27 +560,27 @@ export const RoadmapPage = ({ profile, selectedCareerId, aiData, onBack }: Roadm
                 </div>
               ) : (
                 <ul className="space-y-1.5">
-                  {((activeNode.resources && activeNode.resources.length > 0) 
-                    ? activeNode.resources 
+                  {((activeNode.resources && activeNode.resources.length > 0)
+                    ? activeNode.resources
                     : aiStudyMaterials[activeNode.id] || getNodeResources(inferredCareerId, activeNode.id)
                   ).map(
                     (res) => (
                       <li key={res.url || res.label} className="text-xs text-white/70">
                         <a
-                        href={res.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-accent hover:underline"
-                      >
-                        {res.label}
-                      </a>
-                      <span className="text-white/40 ml-1">
-                        • {res.type} • {res.duration}
-                      </span>
-                    </li>
-                  )
-                )}
-              </ul>
+                          href={res.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-accent hover:underline"
+                        >
+                          {res.label}
+                        </a>
+                        <span className="text-white/40 ml-1">
+                          • {res.type} • {res.duration}
+                        </span>
+                      </li>
+                    )
+                  )}
+                </ul>
               )}
             </div>
 

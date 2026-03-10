@@ -9,7 +9,7 @@ type CareersPageProps = {
   aiData: AIGeneratedData | null;
   onAIGenerated: (data: AIGeneratedData) => void;
   onSelectCareer: (id: string, careerData?: AICareerSuggestion) => void;
-  onBack: () => void;
+  onBack?: () => void;
   onOpenRoadmap: () => void;
 };
 
@@ -76,12 +76,14 @@ export const CareersPage = ({
         className="max-w-3xl mx-auto"
       >
         {/* Back button */}
-        <button
-          className="mb-6 inline-flex items-center px-3 py-1.5 text-xs text-white/60 border border-white/15 rounded-full bg-white/5 backdrop-blur-md hover:bg-red-500 hover:text-white hover:border-red-400 transition-colors"
-          onClick={onBack}
-        >
-          ← Back
-        </button>
+        {onBack && (
+          <button
+            className="mb-6 inline-flex items-center px-3 py-1.5 text-xs text-white/60 border border-white/15 rounded-full bg-white/5 backdrop-blur-md hover:bg-red-500 hover:text-white hover:border-red-400 transition-colors"
+            onClick={onBack}
+          >
+            ← Back
+          </button>
+        )}
 
         {/* Step indicator */}
         <div className="mb-6 flex items-center justify-between text-xs uppercase tracking-[0.2em] text-white/40">
@@ -174,11 +176,10 @@ export const CareersPage = ({
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.07 }}
-                className={`rounded-xl border px-4 py-4 flex flex-col justify-between transition-all cursor-pointer ${
-                  selectedCareerId === career.id
+                className={`rounded-xl border px-4 py-4 flex flex-col justify-between transition-all cursor-pointer ${selectedCareerId === career.id
                     ? "border-white/50 bg-white/10"
                     : "border-white/10 bg-black/30 hover:border-white/25 hover:bg-white/5"
-                }`}
+                  }`}
               >
                 <div className="mb-3">
                   <div className="flex items-center justify-between mb-1">
