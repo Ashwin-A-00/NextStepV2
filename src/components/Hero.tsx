@@ -1,7 +1,11 @@
 import { motion } from "motion/react";
 import { BlurText } from "./UI";
 
-export const Hero = () => {
+type HeroProps = {
+  onStartJourney?: () => void;
+};
+
+export const Hero = ({ onStartJourney }: HeroProps) => {
   return (
     <section className="relative min-h-screen flex flex-col justify-end p-6 md:p-10 overflow-hidden">
       {/* Background Image with Parallax-like effect */}
@@ -40,11 +44,12 @@ export const Hero = () => {
           <div className="md:col-span-6 flex justify-end">
             <motion.div
               whileHover={{ scale: 0.95 }}
+              onClick={onStartJourney}
               className="w-32 h-32 md:w-48 md:h-48 bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center cursor-pointer group"
             >
-              <a href="#start-journey" className="text-2xl md:text-3xl font-light group-hover:text-accent transition-colors">
-                Catalog
-              </a>
+              <span className="text-2xl md:text-3xl font-light group-hover:text-accent transition-colors">
+                Start
+              </span>
             </motion.div>
           </div>
         </div>
