@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { motion } from "motion/react";
 import type { UserProfile } from "../../App";
+import { computeCareerMatches, getTopCareerMatch, type AICareerSuggestion } from "../../lib/ai";
 
 type DashboardProps = {
   profile: UserProfile;
+  selectedCareerId: string | null;
+  selectedCareerData: AICareerSuggestion | null;
   onOpenProfile: () => void;
   onOpenCareers: () => void;
   onOpenRoadmap: () => void;
-  onOpenSkillGap: () => void;
   onOpenAnalysis: () => void;
 };
 
@@ -25,10 +27,11 @@ const computeJobReadyScore = (profile: UserProfile) => {
 
 export const Dashboard = ({
   profile,
+  selectedCareerId,
+  selectedCareerData,
   onOpenProfile,
   onOpenCareers,
   onOpenRoadmap,
-  onOpenSkillGap,
   onOpenAnalysis,
 }: DashboardProps) => {
   const [collapsed, setCollapsed] = useState(false);
@@ -39,6 +42,10 @@ export const Dashboard = ({
   );
   const missingSkills = Math.max(3, matchedSkills + 4);
   const primaryGoal = profile.careerGoal || "Business Analyst";
+  const suggestions = computeCareerMatches(profile);
+  const selectedCareer =
+    suggestions.find((m) => m.id === selectedCareerId) ?? null;
+  const topMatch = selectedCareer || getTopCareerMatch(profile);
 
   return (
     <section className="min-h-screen bg-black text-white">
@@ -101,17 +108,10 @@ export const Dashboard = ({
             </button>
             <button
               className="w-full flex items-center gap-3 px-3 py-2 rounded-sm text-white/70 hover:bg-white/5"
-              onClick={onOpenSkillGap}
-            >
-              <span className="text-[13px]">∿</span>
-              {!collapsed && <span className="tracking-tight">Gap Analysis</span>}
-            </button>
-            <button
-              className="w-full flex items-center gap-3 px-3 py-2 rounded-sm text-white/70 hover:bg-white/5"
               onClick={onOpenAnalysis}
             >
-              <span className="text-[13px]">◎</span>
-              {!collapsed && <span className="tracking-tight">Overall Analysis</span>}
+              <span className="text-[13px]">◉</span>
+              {!collapsed && <span className="tracking-tight">Analysis</span>}
             </button>
             <button className="w-full flex items-center gap-3 px-3 py-2 rounded-sm text-white/40 cursor-not-allowed">
               <span className="text-[13px]">✶</span>
@@ -164,6 +164,46 @@ export const Dashboard = ({
             </div>
           </div>
 
+          {/* Selected AI Career Banner */}
+          {selectedCareerData && (
+            <motion.div
+              initial={{ opacity: 0, y: -12 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-6 rounded-2xl border border-accent/40 bg-accent/5 backdrop-blur-xl px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+            >
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1 flex-wrap">
+                  <span className="text-[10px] uppercase tracking-[0.18em] text-accent border border-accent/40 rounded-full px-2 py-0.5 bg-accent/10">
+                    🤖 Your AI Career Match
+                  </span>
+                  <span className="text-[11px] text-white/50">{selectedCareerData.match}% fit</span>
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full border ${
+                    selectedCareerData.difficulty === "Low" ? "text-emerald-400 border-emerald-400/30" :
+                    selectedCareerData.difficulty === "High" ? "text-red-400 border-red-400/30" :
+                    "text-amber-400 border-amber-400/30"
+                  }`}>{selectedCareerData.difficulty}</span>
+                </div>
+                <h2 className="text-lg font-semibold text-white">{selectedCareerData.title}</h2>
+                <p className="text-xs text-white/60 mt-0.5">{selectedCareerData.tagline}</p>
+                <p className="text-xs text-white/50 mt-1 italic">"{selectedCareerData.reason}"</p>
+              </div>
+              <div className="flex gap-2 flex-shrink-0">
+                <button
+                  className="px-4 py-2 text-xs rounded-full border border-white/20 bg-white/5 hover:bg-white hover:text-black transition-colors"
+                  onClick={onOpenCareers}
+                >
+                  Change Path
+                </button>
+                <button
+                  className="px-4 py-2 text-xs rounded-full bg-accent text-black font-semibold hover:bg-white transition-colors"
+                  onClick={onOpenRoadmap}
+                >
+                  View Roadmap →
+                </button>
+              </div>
+            </motion.div>
+          )}
+
           {/* Top stats row */}
           <div className="grid gap-4 md:grid-cols-4 mb-6">
             <div className="rounded-xl border border-white/15 bg-white/5 px-4 py-3 flex flex-col justify-between">
@@ -214,14 +254,25 @@ export const Dashboard = ({
             <div className="rounded-xl border border-white/15 bg-white/5 px-4 py-3 flex flex-col justify-between">
               <div>
                 <p className="text-xs uppercase tracking-[0.16em] text-white/50 mb-1">
-                  Current Streak
+                  AI Career Match
                 </p>
-                <p className="text-2xl font-semibold">7 days</p>
+                <p className="text-sm font-semibold">
+                  {topMatch ? topMatch.title : "We need more info"}
+                </p>
                 <p className="text-xs text-white/60 mt-1">
-                  Personal best: 14 days
+                  {topMatch
+                    ? `Match score: ${topMatch.match}%`
+                    : "Complete onboarding to unlock a personalized suggestion."}
                 </p>
               </div>
-              <p className="text-[11px] text-white/45 mt-3">🔥 Keep it up</p>
+              {topMatch && (
+                <button
+                  className="mt-3 w-full text-[11px] rounded-full border border-white/20 px-3 py-2 text-white/80 hover:bg-accent hover:text-black hover:border-accent transition-colors text-center"
+                  onClick={onOpenCareers}
+                >
+                  View full AI analysis
+                </button>
+              )}
             </div>
           </div>
 
@@ -324,7 +375,7 @@ export const Dashboard = ({
               </p>
               <button
                 className="text-xs text-white/70 underline underline-offset-4"
-                onClick={onOpenSkillGap}
+                onClick={onOpenAnalysis}
               >
                 Open full view
               </button>

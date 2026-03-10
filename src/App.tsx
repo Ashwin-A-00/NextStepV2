@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Lenis from "lenis";
+import type { AIGeneratedData, AICareerSuggestion } from "./lib/ai";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
 import { HowItWorksBackground } from "./components/HowItWorksBackground";
@@ -18,7 +19,6 @@ import { Dashboard } from "./components/dashboard/Dashboard";
 import { ProfilePage } from "./components/dashboard/ProfilePage";
 import { CareersPage } from "./components/dashboard/CareersPage";
 import { RoadmapPage } from "./components/dashboard/RoadmapPage";
-import { SkillGapPage } from "./components/dashboard/SkillGapPage";
 import { AnalysisPage } from "./components/dashboard/AnalysisPage";
 
 export type ViewId =
@@ -28,11 +28,11 @@ export type ViewId =
   | "onboard-syllabus"
   | "onboard-interests"
   | "onboard-career"
+  | "career-selection"
   | "dashboard"
   | "profile"
   | "careers"
   | "roadmap"
-  | "skill-gap"
   | "analysis";
 
 export type UserProfile = {
@@ -61,6 +61,7 @@ export default function App() {
       };
     }
   }, [view]);
+
   const [profile, setProfile] = useState<UserProfile>({
     name: "",
     email: "",
@@ -70,6 +71,9 @@ export default function App() {
     interests: [],
     careerGoal: "",
   });
+  const [selectedCareerId, setSelectedCareerId] = useState<string | null>(null);
+  const [selectedCareerData, setSelectedCareerData] = useState<AICareerSuggestion | null>(null);
+  const [aiData, setAiData] = useState<AIGeneratedData | null>(null);
 
   const navigate = (next: ViewId) => setView(next);
 
@@ -130,7 +134,7 @@ export default function App() {
             onChange={(interests) =>
               setProfile((prev) => ({ ...prev, interests }))
             }
-            onContinue={() => navigate("onboard-career")}
+            onContinue={() => navigate("career-selection")}
             onBack={() => navigate("onboard-syllabus")}
           />
         )}
@@ -142,17 +146,34 @@ export default function App() {
               setProfile((prev) => ({ ...prev, careerGoal }))
             }
             onBack={() => navigate("onboard-interests")}
-            onBuildRoadmap={() => navigate("dashboard")}
+            onBuildRoadmap={() => navigate("career-selection")}
+          />
+        )}
+
+        {view === "career-selection" && (
+          <CareersPage
+            profile={profile}
+            selectedCareerId={selectedCareerId}
+            aiData={aiData}
+            onAIGenerated={setAiData}
+            onSelectCareer={(id, careerData) => {
+              setSelectedCareerId(id);
+              if (careerData) setSelectedCareerData(careerData);
+              navigate("dashboard");
+            }}
+            onBack={() => navigate("onboard-interests")}
+            onOpenRoadmap={() => navigate("dashboard")}
           />
         )}
 
         {view === "dashboard" && (
           <Dashboard
             profile={profile}
+            selectedCareerId={selectedCareerId}
+            selectedCareerData={selectedCareerData}
             onOpenProfile={() => navigate("profile")}
             onOpenCareers={() => navigate("careers")}
             onOpenRoadmap={() => navigate("roadmap")}
-            onOpenSkillGap={() => navigate("skill-gap")}
             onOpenAnalysis={() => navigate("analysis")}
           />
         )}
@@ -164,6 +185,12 @@ export default function App() {
         {view === "careers" && (
           <CareersPage
             profile={profile}
+            selectedCareerId={selectedCareerId}
+            aiData={aiData}
+            onAIGenerated={setAiData}
+            onSelectCareer={(id) => {
+              setSelectedCareerId(id);
+            }}
             onBack={() => navigate("dashboard")}
             onOpenRoadmap={() => navigate("roadmap")}
           />
@@ -172,13 +199,8 @@ export default function App() {
         {view === "roadmap" && (
           <RoadmapPage
             profile={profile}
-            onBack={() => navigate("dashboard")}
-          />
-        )}
-
-        {view === "skill-gap" && (
-          <SkillGapPage
-            profile={profile}
+            selectedCareerId={selectedCareerId}
+            aiData={aiData}
             onBack={() => navigate("dashboard")}
           />
         )}
@@ -186,6 +208,7 @@ export default function App() {
         {view === "analysis" && (
           <AnalysisPage
             profile={profile}
+            selectedCareerId={selectedCareerId}
             onBack={() => navigate("dashboard")}
           />
         )}
