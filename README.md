@@ -1,145 +1,122 @@
+# NextStep Career Guidance
 
-# AlertKerala
+> **Precision-Driven Career Development Platform**
 
-A comprehensive emergency alert and crisis management system designed to facilitate rapid communication and coordination between authorities and civilians during critical situations and disaster scenarios.
-
-## Overview
-
-AlertKerala is a modern, responsive web application that streamlines emergency response and disaster management. The platform enables civilians to receive real-time alerts, report missing persons, and submit sightings, while providing authorities with powerful dashboards for broadcast management, response coordination, and predictive routing analytics.
-
-## Features
-
-- **Civilian Alert System** - Real-time emergency notifications with detailed incident information
-- **Missing Person Reports** - Streamlined reporting interface for reporting missing individuals
-- **Authority Dashboard** - Comprehensive control panel for emergency coordinators and responders
-- **Emergency Broadcasts** - Animated broadcast system for disseminating critical information
-- **Sighting Submissions** - Community-driven information gathering for missing persons
-- **Response Management** - Centralized panel for tracking and managing emergency responses
-- **Predictive Routing** - AI-assisted route optimization for emergency response teams
-
-## Tech Stack
-
-- **Frontend Framework**: React with TypeScript
-- **Build Tool**: Vite
-- **Routing**: React Router
-- **UI Components**: Radix UI with custom styling
-- **Styling**: Tailwind CSS
-- **Icons**: Lucide React, Material-UI Icons
-- **Animations**: Motion, Canvas Confetti
-- **State Management**: React Context & Hooks
-- **Date Handling**: date-fns
-- **Carousel**: Embla Carousel
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js (v16 or higher)
-- npm or yarn
-
-### Installation
-
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd Alertkerala
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-### Development
-
-Start the development server:
-```bash
-npm run dev
-```
-
-The application will be available at `http://localhost:5173` (default Vite port).
-
-### Production Build
-
-Build the application for production:
-```bash
-npm run build
-```
-
-The optimized build will be generated in the `dist/` directory.
-
-## Project Structure
-
-```
-src/
-├── app/
-│   ├── components/
-│   │   ├── Landing.tsx              # Home page
-│   │   ├── CivilianAlert.tsx        # Civilian alert interface
-│   │   ├── ReportMissing.tsx        # Missing person reporting
-│   │   ├── AuthorityDashboard.tsx   # Authority control panel
-│   │   ├── BroadcastAnimation.tsx   # Emergency broadcast interface
-│   │   ├── SubmitSighting.tsx       # Sighting submission form
-│   │   ├── ResponsePanel.tsx        # Response management center
-│   │   ├── PredictiveRoutes.tsx     # Route optimization
-│   │   ├── Root.tsx                 # Root layout component
-│   │   └── ui/                      # Reusable UI components
-│   ├── routes.ts                    # Route configuration
-│   └── App.tsx                      # Main application component
-├── styles/                          # Global styles and theme
-├── imports/                         # Design tokens and utilities
-└── main.tsx                        # Application entry point
-```
-
-## Routes
-
-| Path | Component | Purpose |
-|------|-----------|---------|
-| `/` | Landing | Home page |
-| `/alert/:id` | CivilianAlert | View emergency alert details |
-| `/report` | ReportMissing | Report a missing person |
-| `/dashboard` | AuthorityDashboard | Authority control center |
-| `/broadcast/:id` | BroadcastAnimation | Emergency broadcast |
-| `/sighting/:id` | SubmitSighting | Submit missing person sighting |
-| `/response/:id` | ResponsePanel | Emergency response management |
-| `/prediction/:id` | PredictiveRoutes | Predictive route analysis |
-
-## Design System
-
-The project uses a comprehensive design system built with Radix UI and Tailwind CSS. Design specifications and tokens are available in the [design documentation](src/imports/pasted_text/design-tokens.ts).
-
-**Design Preview**: [View on Figma](https://www.figma.com/design/S0rGpOGyuqXgzhKv9DaU6O/AlertKerala)
-
-## Component Library
-
-The `ui/` directory contains a collection of accessible, customizable components built on Radix UI primitives:
-
-- Form controls (input, checkbox, radio, select, etc.)
-- Containers (card, dialog, drawer, sidebar, etc.)
-- Navigation (tabs, breadcrumb, pagination, etc.)
-- Feedback (alert, toast, progress, tooltip, etc.)
-- And many more...
-
-All components are fully accessible (WCAG compliant) and responsive.
-
-## Contributing
-
-1. Follow the existing code structure and naming conventions
-2. Use TypeScript for type safety
-3. Ensure components are responsive and accessible
-4. Test changes across different screen sizes
-5. Keep component files focused and single-purpose
-
-## License
-
-This project is part of the Hackeuropa initiative. For licensing details, see [ATTRIBUTIONS.md](ATTRIBUTIONS.md).
-
-## Support
-
-For issues, feature requests, or questions, please refer to the project documentation or open an issue in the repository.
+An intelligent, user-centric career guidance application powered by AI. NextStep combines elegant design with cutting-edge AI technology to help you discover your ideal career path, identify skill gaps, and achieve your professional goals.
 
 ---
 
-**Last Updated**: March 2026  
-**Repository**: [GitHub - Ashwin-A-00/Hackeuropa](https://github.com/Ashwin-A-00/Hackeuropa)
-  
+## ✨ Key Features
+
+- **Intelligent Career Assessment** – AI-powered analysis of your skills, interests, and goals
+- **Personalized Skill Gap Analysis** – Identify the exact skills you need to reach your target role
+- **Interactive Dashboard** – Visualize your progress and career roadmap with intuitive charts
+- **Mentorship Integration** – Connect with experienced professionals in your field
+- **Onboarding Workflow** – Guided setup process to understand your career aspirations and background
+- **Project Planning** – Plan and track meaningful projects aligned with your career goals
+- **Responsive Design** – Seamlessly works across all devices with smooth, modern animations
+
+## 💻 Technology Stack
+
+- **Frontend Framework:** React 19 with TypeScript
+- **Build Tool:** Vite
+- **Styling:** Tailwind CSS with advanced animations
+- **UI Components:** Radix UI primitives
+- **Animation:** Framer Motion
+- **AI Engine:** Google Gemini API
+- **Backend:** Express.js
+- **Smooth Scrolling:** Custom Lenis integration
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or higher)
+- npm or yarn package manager
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd NS
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Configure environment variables**
+   
+   Create a `.env.local` file in the root directory and add your API key:
+   ```bash
+   GEMINI_API_KEY=your_gemini_api_key_here
+   ```
+
+   Get your API key from [Google AI Studio](https://aistudio.google.com/)
+
+4. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+
+   The application will be available at `http://localhost:3000`
+
+### Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server with hot reload |
+| `npm run build` | Build for production |
+| `npm run preview` | Preview production build locally |
+| `npm run lint` | Type-check with TypeScript |
+| `npm run clean` | Remove build artifacts |
+
+## 📁 Project Structure
+
+```
+src/
+├── components/          # Reusable React components
+│   ├── dashboard/      # Dashboard pages and layouts
+│   ├── onboarding/     # Onboarding flow components
+│   ├── ui/             # Core UI components and animations
+│   ├── Hero.tsx        # Landing page hero section
+│   └── ...
+├── lib/
+│   ├── ai.ts          # Gemini API integration
+│   └── utils.ts       # Utility functions
+├── App.tsx            # Main application component
+├── main.tsx           # Application entry point
+└── index.css          # Global styles
+```
+
+## 🎯 Usage
+
+Navigate to the dashboard after onboarding to:
+- View your personalized career analysis
+- Explore skill recommendations
+- Track your development with interactive charts
+- Connect with mentors in your industry
+- Build and monitor your career roadmap
+
+## 🌟 Design Philosophy
+
+NextStep is built with a minimalist, high-end aesthetic that prioritizes clarity and user engagement. Every interaction is intentional, and the interface adapts to create a seamless experience for career explorers at every stage of their journey.
+
+## 🔐 Security
+
+- API keys are stored in environment variables (never committed to version control)
+- Sensitive data is handled securely with encrypted connections
+
+## 📝 License
+
+This project is part of the AI Studio ecosystem. For licensing details, refer to the project settings in AI Studio.
+
+## 🤝 Support & Feedback
+
+For issues, feature requests, or feedback, please open an issue in the repository or contact the development team.
+
+---
+
+**Ready to discover your next career step?** Get started today by following the installation guide above.
